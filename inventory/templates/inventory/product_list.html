@@ -1,0 +1,65 @@
+{% extends 'inventory/base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h4"><i class="bi bi-box-seam me-2"></i>Inventory Overview</h2>
+    
+    <div class="d-flex align-items-center">
+        <span class="badge bg-secondary me-3">{{ products|length }} Items Total</span>
+        <a href="{% url 'product_add' %}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Add Product
+        </a>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-dark"> <tr>
+                    <th><i class="bi bi-hash"></i> SKU</th>
+                    <th><i class="bi bi-tag"></i> Product Name</th>
+                    <th><i class="bi bi-grid"></i> Category</th>
+                    <th><i class="bi bi-stack"></i> Quantity</th>
+                    <th><i class="bi bi-currency-dollar"></i> Price</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td><span class="badge bg-light text-dark border">{{ product.sku }}</span></td>
+                    <td class="fw-semibold">{{ product.name }}</td>
+                    <td>{{ product.category }}</td>
+                    <td>
+                        {% if product.quantity < 5 %}
+                            <span class="text-danger fw-bold">
+                                <i class="bi bi-exclamation-triangle-fill"></i> {{ product.quantity }}
+                            </span>
+                        {% else %}
+                            <span class="text-success">{{ product.quantity }}</span>
+                        {% endif %}
+                    </td>
+                    <td>${{ product.price }}</td>
+                    <td class="text-end">
+                        <a href="{% url 'product_edit' product.pk %}" class="btn btn-sm btn-outline-info me-1" title="Edit Product">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{% url 'product_delete' product.pk %}" class="btn btn-sm btn-outline-danger" title="Delete Product">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center py-5 text-muted">
+                        <i class="bi bi-inbox h1 d-block"></i>
+                        No products in stock.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
