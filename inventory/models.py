@@ -20,7 +20,8 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     # ADD THIS LINE (The "Flawed" Code):
-    description = models.TextField(blank=True, null=True) 
+    # Change TextField to CharField
+description = models.CharField(max_length=255, blank=True, null=True) 
 
     def __str__(self):
         return self.name    
